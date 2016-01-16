@@ -19,13 +19,20 @@ namespace Ferreteria.Controladores
             {//La base de datos tiene registros
                 try
                 {
-                    rut += digitoVerificador(Convert.ToInt32(rut));//Se calcula el digito verificador del rut del usuario
-                    clave = getMD5(clave);//Se usa el cifrado MD5 para la clave
-                    usuario aBuscar = contex.usuario.Where(x => x.rut_usuario == rut && x.clave == clave).Single();
-                    if (aBuscar != null)
-                    {//El usuario existe y se devuelve su tipo de usuario
-                        return (int)aBuscar.id_tipo_usuario;
+                    if (Convert.ToString(rut[rut.Length - 1]) == digitoVerificador(Convert.ToInt32(rut.Substring(0,rut.Length - 1))))
+                    {//si el ultimo digito del rut es valido se procede a buscar
+                        clave = getMD5(clave);//Se usa el cifrado MD5 para la clave
+                        usuario aBuscar = contex.usuario.Where(x => x.rut_usuario == rut && x.clave == clave).Single();
+                        if (aBuscar != null)
+                        {//El usuario existe y se devuelve su tipo de usuario
+                            return (int)aBuscar.id_tipo_usuario;
+                        }
                     }
+                    else
+                    {//El digito esta mal, por lo que se genera un error
+                        return 0;
+                    }
+                    
                 }
                 catch (Exception)
                 {//La excepcion se lanza porque si los datos estan incorrectos, no se logra encontrar un registro por lo que el objeto es null
@@ -50,7 +57,7 @@ namespace Ferreteria.Controladores
         }
 
         //Validar RUT - devuelve el digito verificador
-        private string digitoVerificador(int rut)
+        public string digitoVerificador(int rut)
         {
             int Digito;
             int Contador;
@@ -106,7 +113,7 @@ namespace Ferreteria.Controladores
             }
             catch (Exception e)
             {//Si se genera un error se informa de este
-                System.Windows.Forms.MessageBox.Show("Error"+e.Message);
+                System.Windows.Forms.MessageBox.Show("Error"+e.StackTrace);
                 return false;
             }
         } 
@@ -191,6 +198,43 @@ namespace Ferreteria.Controladores
                 System.Windows.Forms.MessageBox.Show("Error" + e.Message);
                 return null;
             }
+        }
+        //********************************************************************************
+        //Obtener una lista de todos los usuarios con LINQ
+        public List<Object> ListarUsuariosCompleto() {
+            try
+            {
+                var resultado = from u in contex.usuario
+                                join tu in contex.tipo_usuario
+                                on u.id_tipo_usuario equals
+                                tu.id_tipo_usuario select new
+                                { CODUsuario = u.codigo_usuario,
+                                  Rut = u.rut_usuario,
+                                  Nombre = u.nombre,
+                                  Apellido = u.apellido,
+                                  Email = u.email,
+                                  Tipo = tu.nombre };
+                return resultado.ToList<Object>();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //********************************************************************************
+        //Generar codigo de usuario
+        public string GenerarCodigo(string tipoUsuario) {
+            StringBuilder codigo = new StringBuilder();
+            codigo.Append(tipoUsuario.Substring(0, 1).ToUpper());
+            string codigoUsuarioAnterior = contex.usuario.ToList()[contex.usuario.Count() - 1].codigo_usuario;
+            string digitos = codigoUsuarioAnterior.Substring(1, 2);
+            string digito0 = digitos[0].ToString();
+            int digitoAaumentar = Convert.ToInt32(digitos[1].ToString());
+            digitoAaumentar++;
+            codigo.Append(digito0);
+            codigo.Append(Convert.ToString(digitoAaumentar));
+            return codigo.ToString();
         }
         #endregion Metodos principales CRUD de la entidad Usuario.
     }
