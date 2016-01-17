@@ -56,5 +56,10 @@ namespace Ferreteria.Vistas
             categoria.MdiParent = this.MdiParent;
             categoria.Show();
         }
+
+        private void nuevoProductoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
