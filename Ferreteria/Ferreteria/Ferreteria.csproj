@@ -116,6 +116,24 @@
     <Compile Include="Vistas\Administrador.Designer.cs">
       <DependentUpon>Administrador.cs</DependentUpon>
     </Compile>
+    <Compile Include="Vistas\Mantenedores\Categoria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vistas\Mantenedores\Categoria.Designer.cs">
+      <DependentUpon>Categoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vistas\Mantenedores\Marca.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vistas\Mantenedores\Marca.Designer.cs">
+      <DependentUpon>Marca.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vistas\Mantenedores\TipoUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vistas\Mantenedores\TipoUsuario.Designer.cs">
+      <DependentUpon>TipoUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vistas\Mantenedores\Usuarios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +161,15 @@
     <EmbeddedResource Include="Vistas\Administrador.resx">
       <DependentUpon>Administrador.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Vistas\Mantenedores\Categoria.resx">
+      <DependentUpon>Categoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vistas\Mantenedores\Marca.resx">
+      <DependentUpon>Marca.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vistas\Mantenedores\TipoUsuario.resx">
+      <DependentUpon>TipoUsuario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Vistas\Mantenedores\Usuarios.resx">
       <DependentUpon>Usuarios.cs</DependentUpon>
     </EmbeddedResource>
@@ -167,10 +194,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
   <ItemGroup>
     <Content Include="Modelo\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -182,6 +205,9 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

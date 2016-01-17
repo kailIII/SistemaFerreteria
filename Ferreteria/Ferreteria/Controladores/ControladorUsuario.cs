@@ -13,8 +13,9 @@ namespace Ferreteria.Controladores
         private FerreteriaEntities contex = new FerreteriaEntities();//Referencia al objeto que manipula los datos de las entidades y a estas mismas-
 
         //Acceder al sistema con el rut del usuario y su clave
-        public int Acceder(string rut, string clave)
+        public string Acceder(string rut, string clave)
         {
+            string error = "error";
             if (contex.usuario.Count() > 0)
             {//La base de datos tiene registros
                 try
@@ -25,21 +26,21 @@ namespace Ferreteria.Controladores
                         usuario aBuscar = contex.usuario.Where(x => x.rut_usuario == rut && x.clave == clave).Single();
                         if (aBuscar != null)
                         {//El usuario existe y se devuelve su tipo de usuario
-                            return (int)aBuscar.id_tipo_usuario;
+                            return contex.tipo_usuario.Find(aBuscar.id_tipo_usuario).nombre;
                         }
                     }
                     else
                     {//El digito esta mal, por lo que se genera un error
-                        return 0;
+                        return error;
                     }
                     
                 }
                 catch (Exception)
                 {//La excepcion se lanza porque si los datos estan incorrectos, no se logra encontrar un registro por lo que el objeto es null
-                    return 0;
+                    return error;
                 }
             }
-            return 0;//Retornar 0 significa que es un error.
+            return error;//Retornar 0 significa que es un error.
         }
 
         //Encriptar Clave y obtenerla en MD5

@@ -163,6 +163,7 @@ namespace Ferreteria.Vistas.Mantenedores
             }
             else
             {
+                //Dependiendo de que opcion tome el usuario respecto al tipo de este, se guarda en una variable
                 string nombreTipoUsuario = controladorTipoUsuario.ObtenerNombreTipoUsuario(Convert.ToInt32(cboTipoUsuario.SelectedValue));
                 txtCodUsuario.Text = controladorUsuario.GenerarCodigo(nombreTipoUsuario);
                 usuario aEditar = new usuario()//se crea un usuario que se agregara a la DB
@@ -182,7 +183,7 @@ namespace Ferreteria.Vistas.Mantenedores
                 }
                 else
                 {
-                    MessageBox.Show("No se ah realizado ningún cambio.", "Mensaje de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No se ah realizado ningún cambio en los datos.", "Mensaje de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }

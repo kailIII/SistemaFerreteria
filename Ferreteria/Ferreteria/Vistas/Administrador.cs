@@ -35,5 +35,26 @@ namespace Ferreteria.Vistas
             usuarios.MdiParent = this.MdiParent;
             usuarios.Show();
         }
+
+        private void tiposDeUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Vistas.Mantenedores.TipoUsuario tipoUsuario = new Mantenedores.TipoUsuario();
+            tipoUsuario.MdiParent = this.MdiParent;
+            tipoUsuario.Show();
+        }
+
+        private void marcasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Vistas.Mantenedores.Marca marca = new Mantenedores.Marca();
+            marca.MdiParent = this.MdiParent;
+            marca.Show();
+        }
+
+        private void categoriasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Vistas.Mantenedores.Categoria categoria = new Mantenedores.Categoria();
+            categoria.MdiParent = this.MdiParent;
+            categoria.Show();
+        }
     }
 }
