@@ -59,7 +59,9 @@ namespace Ferreteria.Vistas
 
         private void nuevoProductoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Vistas.Archivo.NuevoProducto nuevoProducto = new Archivo.NuevoProducto();
+            nuevoProducto.MdiParent = this.MdiParent;
+            nuevoProducto.Show();
         }
     }
 }

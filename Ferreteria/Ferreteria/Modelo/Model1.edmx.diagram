@@ -4,22 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f26313b23319436fb8474b858b2adf00" Name="Diagram1">
-        <EntityTypeShape EntityType="FerreteriaModel.categoria" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="FerreteriaModel.codigo_barras" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="FerreteriaModel.detalle_venta" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FerreteriaModel.marca" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+      <Diagram DiagramId="9b9b40db34094785abde5aa5ca44a435" Name="Diagram1">
+        <EntityTypeShape EntityType="FerreteriaModel.categoria" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="FerreteriaModel.detalle_venta" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FerreteriaModel.marca" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="FerreteriaModel.producto" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="FerreteriaModel.stock" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FerreteriaModel.tipo_usuario" Width="1.5" PointX="1.5" PointY="18.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="FerreteriaModel.usuario" Width="1.5" PointX="0.75" PointY="13.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="FerreteriaModel.venta" Width="1.5" PointX="3" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FerreteriaModel.tipo_usuario" Width="1.5" PointX="1.5" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FerreteriaModel.usuario" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FerreteriaModel.venta" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
         <AssociationConnector Association="FerreteriaModel.FK_producto_categoria" ManuallyRouted="false" />
-        <AssociationConnector Association="FerreteriaModel.FK_producto_codigo_barras" ManuallyRouted="false" />
         <AssociationConnector Association="FerreteriaModel.FK_detalle_venta_producto" ManuallyRouted="false" />
         <AssociationConnector Association="FerreteriaModel.FK_detalle_venta_venta" ManuallyRouted="false" />
         <AssociationConnector Association="FerreteriaModel.FK_producto_marca" ManuallyRouted="false" />
-        <AssociationConnector Association="FerreteriaModel.FK_producto_stock" ManuallyRouted="false" />
         <AssociationConnector Association="FerreteriaModel.FK_usuario_tipo_usuario" ManuallyRouted="false" />
         <AssociationConnector Association="FerreteriaModel.FK_venta_usuario" ManuallyRouted="false" />
       </Diagram>

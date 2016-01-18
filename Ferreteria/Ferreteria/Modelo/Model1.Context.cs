@@ -26,11 +26,9 @@ namespace Ferreteria.Modelo
         }
     
         public DbSet<categoria> categoria { get; set; }
-        public DbSet<codigo_barras> codigo_barras { get; set; }
         public DbSet<detalle_venta> detalle_venta { get; set; }
         public DbSet<marca> marca { get; set; }
         public DbSet<producto> producto { get; set; }
-        public DbSet<stock> stock { get; set; }
         public DbSet<tipo_usuario> tipo_usuario { get; set; }
         public DbSet<usuario> usuario { get; set; }
         public DbSet<venta> venta { get; set; }

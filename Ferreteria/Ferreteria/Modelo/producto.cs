@@ -22,18 +22,16 @@ namespace Ferreteria.Modelo
         public string cod_producto { get; set; }
         public int id_producto { get; set; }
         public string nombre { get; set; }
-        public Nullable<int> id_cod_barras { get; set; }
         public Nullable<int> id_marca { get; set; }
-        public Nullable<int> id_stock { get; set; }
         public Nullable<int> id_categoria { get; set; }
         public string descripcion { get; set; }
         public Nullable<int> precio { get; set; }
         public Nullable<System.DateTime> fecha_ingreso { get; set; }
+        public string cod_barra { get; set; }
+        public Nullable<int> stock { get; set; }
     
         public virtual categoria categoria { get; set; }
-        public virtual codigo_barras codigo_barras { get; set; }
         public virtual ICollection<detalle_venta> detalle_venta { get; set; }
         public virtual marca marca { get; set; }
-        public virtual stock stock { get; set; }
     }
 }

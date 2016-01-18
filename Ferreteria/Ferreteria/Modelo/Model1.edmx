@@ -12,14 +12,6 @@
           <Property Name="id_categoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="codigo_barras">
-          <Key>
-            <PropertyRef Name="id_cod_barras" />
-          </Key>
-          <Property Name="id_cod_barras" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="numero_cod_barras" Type="nvarchar" MaxLength="50" />
-          <Property Name="fecha" Type="date" />
-        </EntityType>
         <EntityType Name="detalle_venta">
           <Key>
             <PropertyRef Name="id_detalle_venta" />
@@ -45,20 +37,13 @@
           <Property Name="cod_producto" Type="nvarchar" MaxLength="50" />
           <Property Name="id_producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="nvarchar" MaxLength="50" />
-          <Property Name="id_cod_barras" Type="int" />
           <Property Name="id_marca" Type="int" />
-          <Property Name="id_stock" Type="int" />
           <Property Name="id_categoria" Type="int" />
           <Property Name="descripcion" Type="nvarchar" MaxLength="50" />
           <Property Name="precio" Type="int" />
           <Property Name="fecha_ingreso" Type="date" />
-        </EntityType>
-        <EntityType Name="stock">
-          <Key>
-            <PropertyRef Name="id_stock" />
-          </Key>
-          <Property Name="id_stock" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="cantidad" Type="int" />
+          <Property Name="cod_barra" Type="nvarchar" MaxLength="50" />
+          <Property Name="stock" Type="int" />
         </EntityType>
         <EntityType Name="tipo_usuario">
           <Key>
@@ -126,18 +111,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_producto_codigo_barras">
-          <End Role="codigo_barras" Type="Self.codigo_barras" Multiplicity="0..1" />
-          <End Role="producto" Type="Self.producto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="codigo_barras">
-              <PropertyRef Name="id_cod_barras" />
-            </Principal>
-            <Dependent Role="producto">
-              <PropertyRef Name="id_cod_barras" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_producto_marca">
           <End Role="marca" Type="Self.marca" Multiplicity="0..1" />
           <End Role="producto" Type="Self.producto" Multiplicity="*" />
@@ -147,18 +120,6 @@
             </Principal>
             <Dependent Role="producto">
               <PropertyRef Name="id_marca" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_producto_stock">
-          <End Role="stock" Type="Self.stock" Multiplicity="0..1" />
-          <End Role="producto" Type="Self.producto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="stock">
-              <PropertyRef Name="id_stock" />
-            </Principal>
-            <Dependent Role="producto">
-              <PropertyRef Name="id_stock" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -188,11 +149,9 @@
         </Association>
         <EntityContainer Name="FerreteriaModelStoreContainer">
           <EntitySet Name="categoria" EntityType="Self.categoria" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="codigo_barras" EntityType="Self.codigo_barras" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="detalle_venta" EntityType="Self.detalle_venta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="marca" EntityType="Self.marca" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="producto" EntityType="Self.producto" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="stock" EntityType="Self.stock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tipo_usuario" EntityType="Self.tipo_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="venta" EntityType="Self.venta" Schema="dbo" store:Type="Tables" />
@@ -208,16 +167,8 @@
             <End Role="categoria" EntitySet="categoria" />
             <End Role="producto" EntitySet="producto" />
           </AssociationSet>
-          <AssociationSet Name="FK_producto_codigo_barras" Association="Self.FK_producto_codigo_barras">
-            <End Role="codigo_barras" EntitySet="codigo_barras" />
-            <End Role="producto" EntitySet="producto" />
-          </AssociationSet>
           <AssociationSet Name="FK_producto_marca" Association="Self.FK_producto_marca">
             <End Role="marca" EntitySet="marca" />
-            <End Role="producto" EntitySet="producto" />
-          </AssociationSet>
-          <AssociationSet Name="FK_producto_stock" Association="Self.FK_producto_stock">
-            <End Role="stock" EntitySet="stock" />
             <End Role="producto" EntitySet="producto" />
           </AssociationSet>
           <AssociationSet Name="FK_usuario_tipo_usuario" Association="Self.FK_usuario_tipo_usuario">
@@ -241,15 +192,6 @@
           <Property Name="id_categoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="producto" Relationship="Self.FK_producto_categoria" FromRole="categoria" ToRole="producto" />
-        </EntityType>
-        <EntityType Name="codigo_barras">
-          <Key>
-            <PropertyRef Name="id_cod_barras" />
-          </Key>
-          <Property Name="id_cod_barras" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="numero_cod_barras" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="fecha" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="producto" Relationship="Self.FK_producto_codigo_barras" FromRole="codigo_barras" ToRole="producto" />
         </EntityType>
         <EntityType Name="detalle_venta">
           <Key>
@@ -279,26 +221,16 @@
           <Property Name="cod_producto" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="id_producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="id_cod_barras" Type="Int32" />
           <Property Name="id_marca" Type="Int32" />
-          <Property Name="id_stock" Type="Int32" />
           <Property Name="id_categoria" Type="Int32" />
           <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="precio" Type="Int32" />
           <Property Name="fecha_ingreso" Type="DateTime" Precision="0" />
+          <Property Name="cod_barra" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="stock" Type="Int32" />
           <NavigationProperty Name="categoria" Relationship="Self.FK_producto_categoria" FromRole="producto" ToRole="categoria" />
-          <NavigationProperty Name="codigo_barras" Relationship="Self.FK_producto_codigo_barras" FromRole="producto" ToRole="codigo_barras" />
           <NavigationProperty Name="detalle_venta" Relationship="Self.FK_detalle_venta_producto" FromRole="producto" ToRole="detalle_venta" />
           <NavigationProperty Name="marca" Relationship="Self.FK_producto_marca" FromRole="producto" ToRole="marca" />
-          <NavigationProperty Name="stock" Relationship="Self.FK_producto_stock" FromRole="producto" ToRole="stock" />
-        </EntityType>
-        <EntityType Name="stock">
-          <Key>
-            <PropertyRef Name="id_stock" />
-          </Key>
-          <Property Name="id_stock" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cantidad" Type="Int32" />
-          <NavigationProperty Name="producto" Relationship="Self.FK_producto_stock" FromRole="stock" ToRole="producto" />
         </EntityType>
         <EntityType Name="tipo_usuario">
           <Key>
@@ -347,18 +279,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_producto_codigo_barras">
-          <End Role="codigo_barras" Type="Self.codigo_barras" Multiplicity="0..1" />
-          <End Role="producto" Type="Self.producto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="codigo_barras">
-              <PropertyRef Name="id_cod_barras" />
-            </Principal>
-            <Dependent Role="producto">
-              <PropertyRef Name="id_cod_barras" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_detalle_venta_producto">
           <End Role="producto" Type="Self.producto" Multiplicity="0..1" />
           <End Role="detalle_venta" Type="Self.detalle_venta" Multiplicity="*" />
@@ -395,18 +315,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_producto_stock">
-          <End Role="stock" Type="Self.stock" Multiplicity="0..1" />
-          <End Role="producto" Type="Self.producto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="stock">
-              <PropertyRef Name="id_stock" />
-            </Principal>
-            <Dependent Role="producto">
-              <PropertyRef Name="id_stock" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_usuario_tipo_usuario">
           <End Role="tipo_usuario" Type="Self.tipo_usuario" Multiplicity="0..1" />
           <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
@@ -433,20 +341,14 @@
         </Association>
         <EntityContainer Name="FerreteriaEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="categoria" EntityType="Self.categoria" />
-          <EntitySet Name="codigo_barras" EntityType="Self.codigo_barras" />
           <EntitySet Name="detalle_venta" EntityType="Self.detalle_venta" />
           <EntitySet Name="marca" EntityType="Self.marca" />
           <EntitySet Name="producto" EntityType="Self.producto" />
-          <EntitySet Name="stock" EntityType="Self.stock" />
           <EntitySet Name="tipo_usuario" EntityType="Self.tipo_usuario" />
           <EntitySet Name="usuario" EntityType="Self.usuario" />
           <EntitySet Name="venta" EntityType="Self.venta" />
           <AssociationSet Name="FK_producto_categoria" Association="Self.FK_producto_categoria">
             <End Role="categoria" EntitySet="categoria" />
-            <End Role="producto" EntitySet="producto" />
-          </AssociationSet>
-          <AssociationSet Name="FK_producto_codigo_barras" Association="Self.FK_producto_codigo_barras">
-            <End Role="codigo_barras" EntitySet="codigo_barras" />
             <End Role="producto" EntitySet="producto" />
           </AssociationSet>
           <AssociationSet Name="FK_detalle_venta_producto" Association="Self.FK_detalle_venta_producto">
@@ -459,10 +361,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_producto_marca" Association="Self.FK_producto_marca">
             <End Role="marca" EntitySet="marca" />
-            <End Role="producto" EntitySet="producto" />
-          </AssociationSet>
-          <AssociationSet Name="FK_producto_stock" Association="Self.FK_producto_stock">
-            <End Role="stock" EntitySet="stock" />
             <End Role="producto" EntitySet="producto" />
           </AssociationSet>
           <AssociationSet Name="FK_usuario_tipo_usuario" Association="Self.FK_usuario_tipo_usuario">
@@ -485,15 +383,6 @@
               <MappingFragment StoreEntitySet="categoria">
                 <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="codigo_barras">
-            <EntityTypeMapping TypeName="FerreteriaModel.codigo_barras">
-              <MappingFragment StoreEntitySet="codigo_barras">
-                <ScalarProperty Name="id_cod_barras" ColumnName="id_cod_barras" />
-                <ScalarProperty Name="numero_cod_barras" ColumnName="numero_cod_barras" />
-                <ScalarProperty Name="fecha" ColumnName="fecha" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -523,21 +412,13 @@
                 <ScalarProperty Name="cod_producto" ColumnName="cod_producto" />
                 <ScalarProperty Name="id_producto" ColumnName="id_producto" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="id_cod_barras" ColumnName="id_cod_barras" />
                 <ScalarProperty Name="id_marca" ColumnName="id_marca" />
-                <ScalarProperty Name="id_stock" ColumnName="id_stock" />
                 <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="precio" ColumnName="precio" />
                 <ScalarProperty Name="fecha_ingreso" ColumnName="fecha_ingreso" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="stock">
-            <EntityTypeMapping TypeName="FerreteriaModel.stock">
-              <MappingFragment StoreEntitySet="stock">
-                <ScalarProperty Name="id_stock" ColumnName="id_stock" />
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="cod_barra" ColumnName="cod_barra" />
+                <ScalarProperty Name="stock" ColumnName="stock" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
