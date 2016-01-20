@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Ferreteria.Controladores;
 using Ferreteria.Modelo;
+using iTextSharp;
+using iTextSharp.text.pdf;
+
+
 
 namespace Ferreteria.Vistas.Archivo
 {
@@ -23,14 +27,17 @@ namespace Ferreteria.Vistas.Archivo
             InitializeComponent();
             cargarCboMarcas();
             cargarCboCategorias();
+            cargarGridProductos();
         }
 
-        public NuevoProducto(string cod)
+        public NuevoProducto(string cod, Bitmap codigo_barras_completo)
         {
             InitializeComponent();
             cargarCboMarcas();
             cargarCboCategorias();
             lbCodBarraProducto.Text = cod;
+            txtCodBarraProductoLeido.Text = cod;
+            pictureBox1.Image = codigo_barras_completo;
         }
 
         //carga el combobox con las categorias en la db
@@ -95,7 +102,7 @@ namespace Ferreteria.Vistas.Archivo
             }
             else if (lbCodBarraProducto.Text == "XXXXXXX")
             {
-                MessageBox.Show("Debe generar un nuevo Código de Barras para el producto\nPor favor haga click en el botón, Generar código de Barras.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("1.- Debe generar un nuevo Código de Barras para el producto.\nPor favor haga click en el botón, Generar código de Barras.\n2.- Si el producto posee un código, use la pistola lectora para ingresar este dato.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else if (String.IsNullOrEmpty(txtStockProducto.Text.Trim()))
             {
@@ -112,17 +119,137 @@ namespace Ferreteria.Vistas.Archivo
             }
             else
             {//si ninguno de los campos esta vacio, se crea un nuevo producto
-                MessageBox.Show(lbCodBarraProducto.Text);
+                producto nuevo = new producto() {
+                    nombre = txtNombreProducto.Text.Trim(),
+                    cod_producto = controladorProducto.GenerarNuevoCodigoProducto(),
+                    id_marca = Convert.ToInt32(cboMarcaProducto.SelectedValue),
+                    id_categoria = Convert.ToInt32(cboCategoriaProducto.SelectedValue),
+                    precio = Convert.ToInt32(txtPrecioProducto.Text.Trim()),
+                    descripcion = txtDescripcionProducto.Text.Trim(),
+                    stock = Convert.ToInt32(txtStockProducto.Text.Trim()),
+                    cod_barra = txtCodBarraProductoLeido.Text.Trim(),
+                    fecha_ingreso = DateTime.Now
+                };
+                if (controladorProducto.AgregarProducto(nuevo))
+                {
+                    MessageBox.Show("El nuevo producto ah sido agregado.", "Mensaje de usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    cargarGridProductos();
+                }
+                else
+                {
+                    MessageBox.Show("El nuevo producto NO ah sido agregado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
+        //cargar Grilla con todos los productos de la DB
+        private void cargarGridProductos() {
+            gridProductos.DataSource = controladorProducto.ListarProductos();
+        }
+
+        //Al hacer click en el boton, se abre el formulario responsable de generar el codigo de barras
         private void btnGenerarCodBarra_Click(object sender, EventArgs e)
         {
             Vistas.Generar_Cod_Barras.CodigoBarras generarCodBarra = new Generar_Cod_Barras.CodigoBarras();
             this.Close();
             generarCodBarra.Show();
         }
+        
+        //Al cambiar el texto del campo se representa en forma de imagen que represente al codigo de barras
+        private void txtCodBarraProductoLeido_TextChanged(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtCodBarraProductoLeido.Text))
+            {//si el campo de codigo de barra esta vacio entonces mostrar error
+                MessageBox.Show("1.- Debe generar un nuevo Código de Barras para el producto.\nPor favor haga click en el botón, Generar código de Barras.\n2.- Si el producto posee un código, use la pistola lectora para ingresar este dato.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                lbCodBarraProducto.Text = "XXXXXXX";
+            }
+            else
+            {//si no esta vacio el campo, se carga la previsualizacion del codigo de barras
+                lbCodBarraProducto.Text = txtCodBarraProductoLeido.Text;
+                
+                pictureBox1.Image = controladorProducto.GenerarCodBarras(lbCodBarraProducto.Text);
+            }
+        }
 
-       
+        //Al cambiar el texto del campo se representa en forma de imagen que represente al codigo de barras
+        private void lbCodBarraProducto_TextChanged(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(lbCodBarraProducto.Text))
+            {
+                lbCodBarraProducto.Text = "XXXXXXX";
+            }
+            else
+            {
+                txtCodBarraProductoLeido.Text = lbCodBarraProducto.Text;
+
+                pictureBox1.Image = controladorProducto.GenerarCodBarras(txtCodBarraProductoLeido.Text.Trim());
+            }
+        }
+        
+        //eliminar u producto mediante su id y su codigo de barras 
+        private void btnEliminarProducto_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtCodBarraProductoBusqueda.Text.Trim()) || txtIdProducto.Text == "")
+            {
+                MessageBox.Show("Para poder Eliminar un Producto primero debe buscarlo.\n\n1.- Ingrese El Codigo de Barras del producto.\n2.- Haga click en el botón Buscar.\n3.- Luego haga click en el botón Eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                int idProducto = Convert.ToInt32(txtIdProducto.Text.Trim());
+                if (controladorProducto.EliminarProdcuto(idProducto))
+                {
+                    MessageBox.Show("El producto ah sido eliminado.", "Mensaje de usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    cargarGridProductos();
+                    //programar funcion para limpiar campos.
+                }
+                else
+                {
+                    MessageBox.Show("El producto no ah sido eliminado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        //Edita un producto mediante el codigo de barras
+        private void btnEditarProducto_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtCodBarraProductoBusqueda.Text.Trim()))
+            {//si el campo de codigo de barra esta vacio no se puede editar porque primero se debe buscar un productoa a editar
+                MessageBox.Show("El campo Cod. De Barra no puede estar vacio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (controladorProducto.BuscarProducto(txtCodBarraProductoBusqueda.Text.Trim()) == null)
+            {//si no se encuentra el producto se envia el mensaje de advertencia
+                MessageBox.Show("Para poder Editar un Producto primero debe buscarlo.\n\n1.- Ingrese El Codigo de Barras del producto.\n2.- Haga click en el botón Buscar.\n3.- Luego haga click en el botón Editar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                producto aEditar = new producto()//se crea un usuario que se agregara a la DB
+                {
+                    id_producto = Convert.ToInt32(txtIdProducto.Text.Trim()),
+                    nombre = txtNombreProducto.Text.Trim(),
+                    cod_barra = txtCodBarraProductoLeido.Text.Trim(),
+                    descripcion = txtDescripcionProducto.Text.Trim(),
+                    id_categoria = (int) cboCategoriaProducto.SelectedValue,
+                    id_marca = (int) cboMarcaProducto.SelectedValue,
+                    precio = Convert.ToInt32(txtPrecioProducto.Text.Trim()),
+                    stock = Convert.ToInt32(txtStockProducto.Text.Trim()),
+                    cod_producto = txtCodigoProducto.Text.Trim()
+                };
+
+                if (controladorProducto.EditarProdutco(aEditar))
+                {
+                    MessageBox.Show("El producto ah sido editado.", "Mensaje de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    cargarGridProductos();
+                }
+                else
+                {
+                    MessageBox.Show("No se ah realizado ningún cambio en los datos.", "Mensaje de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void BtnBuscarProducto_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

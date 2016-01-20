@@ -118,12 +118,12 @@ namespace Ferreteria.Vistas.Mantenedores
                 marca aEliminar = controladorMarca.BuscarMarca(txtNonbreMarca.Text.Trim());
                 if (controladorMarca.EliminarMarca(aEliminar.id_marca))
                 {//si la marca es eliminado entonces se actualiza la grilla con datos
-                    MessageBox.Show("La marca ah sido modificado.", "Mensaje de usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("La marca ah sido eliminada.", "Mensaje de usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     cargarGridMarca();
                 }
                 else
                 {//si no es eliminado se muestra un mensaje de error
-                    MessageBox.Show("La marca no ah sido eliminado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("La marca no ah sido eliminada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
