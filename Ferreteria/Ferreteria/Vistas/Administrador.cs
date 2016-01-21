@@ -63,5 +63,32 @@ namespace Ferreteria.Vistas
             nuevoProducto.MdiParent = this.MdiParent;
             nuevoProducto.Show();
         }
+
+        private void estadisticasDeVentasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Vistas.Herramientas.EstadisticasVentas estadisticasVentas = new Herramientas.EstadisticasVentas();
+            estadisticasVentas.MdiParent = this.MdiParent;
+            estadisticasVentas.Show();
+        }
+
+        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Vistas.Ayuda.AcercaDe acercaDe = new Ayuda.AcercaDe();
+            acercaDe.MdiParent = this.MdiParent;
+            acercaDe.Show();
+        }
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.ExitThread();
+            Application.Exit();
+        }
+
+        private void nuevaVentaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Vistas.Archivo.NuevaVenta nuevaVenta = new Archivo.NuevaVenta();
+            nuevaVenta.MdiParent = this.MdiParent;
+            nuevaVenta.Show();
+        }
     }
 }

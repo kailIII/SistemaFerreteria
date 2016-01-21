@@ -46,6 +46,7 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -125,11 +126,23 @@
     <Compile Include="Vistas\Archivo\NuevoProducto.Designer.cs">
       <DependentUpon>NuevoProducto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Vistas\Ayuda\AcercaDe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vistas\Ayuda\AcercaDe.Designer.cs">
+      <DependentUpon>AcercaDe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vistas\Generar Cod Barras\CodigoBarras.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Vistas\Generar Cod Barras\CodigoBarras.Designer.cs">
       <DependentUpon>CodigoBarras.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vistas\Herramientas\EstadisticasVentas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vistas\Herramientas\EstadisticasVentas.Designer.cs">
+      <DependentUpon>EstadisticasVentas.cs</DependentUpon>
     </Compile>
     <Compile Include="Vistas\Mantenedores\Categoria.cs">
       <SubType>Form</SubType>
@@ -172,6 +185,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Vistas\Administrador.resx">
       <DependentUpon>Administrador.cs</DependentUpon>
@@ -182,8 +196,14 @@
     <EmbeddedResource Include="Vistas\Archivo\NuevoProducto.resx">
       <DependentUpon>NuevoProducto.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Vistas\Ayuda\AcercaDe.resx">
+      <DependentUpon>AcercaDe.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Vistas\Generar Cod Barras\CodigoBarras.resx">
       <DependentUpon>CodigoBarras.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vistas\Herramientas\EstadisticasVentas.resx">
+      <DependentUpon>EstadisticasVentas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vistas\Mantenedores\Categoria.resx">
       <DependentUpon>Categoria.cs</DependentUpon>
@@ -221,7 +241,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Vistas\Reportes\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Modelo\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -233,6 +255,17 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <None Include="Resources\supermarket20.png" />
+    <None Include="Resources\factories1.png" />
+    <None Include="Resources\dollar12.png" />
+    <None Include="Resources\question58.png" />
+    <None Include="Resources\info28.png" />
+    <None Include="Resources\ascendant6.png" />
+    <None Include="Resources\shopping122.png" />
+    <None Include="Resources\user73.png" />
+    <None Include="Resources\three115.png" />
+    <None Include="Resources\multiple25.png" />
+    <None Include="Resources\key59.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

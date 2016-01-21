@@ -222,34 +222,38 @@ namespace Ferreteria.Vistas.Archivo
             }
             else
             {
-                producto aEditar = new producto()//se crea un usuario que se agregara a la DB
-                {
-                    id_producto = Convert.ToInt32(txtIdProducto.Text.Trim()),
-                    nombre = txtNombreProducto.Text.Trim(),
-                    cod_barra = txtCodBarraProductoLeido.Text.Trim(),
-                    descripcion = txtDescripcionProducto.Text.Trim(),
-                    id_categoria = (int) cboCategoriaProducto.SelectedValue,
-                    id_marca = (int) cboMarcaProducto.SelectedValue,
-                    precio = Convert.ToInt32(txtPrecioProducto.Text.Trim()),
-                    stock = Convert.ToInt32(txtStockProducto.Text.Trim()),
-                    cod_producto = txtCodigoProducto.Text.Trim()
-                };
-
-                if (controladorProducto.EditarProdutco(aEditar))
-                {
-                    MessageBox.Show("El producto ah sido editado.", "Mensaje de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    cargarGridProductos();
+                if (String.IsNullOrEmpty(txtNombreProducto.Text.Trim()) || String.IsNullOrEmpty(txtCodBarraProductoLeido.Text.Trim()) || String.IsNullOrEmpty(txtPrecioProducto.Text.Trim()) || String.IsNullOrEmpty(txtStockProducto.Text.Trim()) || String.IsNullOrEmpty(txtDescripcionProducto.Text.Trim()))
+                {//si lso campos estan vacios se debe informar
+                    MessageBox.Show("Para poder Editar un Producto primero debe buscarlo.\n\n1.- Ingrese El Codigo de Barras del producto.\n2.- Haga click en el botón Buscar.\n3.- Luego haga click en el botón Editar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
-                    MessageBox.Show("No se ah realizado ningún cambio en los datos.", "Mensaje de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    producto aEditar = new producto()//se crea un usuario que se agregara a la DB
+                    {
+                        id_producto = Convert.ToInt32(txtIdProducto.Text.Trim()),
+                        nombre = txtNombreProducto.Text.Trim(),
+                        cod_barra = txtCodBarraProductoLeido.Text.Trim(),
+                        descripcion = txtDescripcionProducto.Text.Trim(),
+                        id_categoria = (int)cboCategoriaProducto.SelectedValue,
+                        id_marca = (int)cboMarcaProducto.SelectedValue,
+                        precio = Convert.ToInt32(txtPrecioProducto.Text.Trim()),
+                        stock = Convert.ToInt32(txtStockProducto.Text.Trim()),
+                        cod_producto = txtCodigoProducto.Text.Trim()
+                    };
+
+                    if (controladorProducto.EditarProdutco(aEditar))
+                    {
+                        MessageBox.Show("El producto ah sido editado.", "Mensaje de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        cargarGridProductos();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se ah realizado ningún cambio en los datos.", "Mensaje de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
         }
 
-        private void BtnBuscarProducto_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }
